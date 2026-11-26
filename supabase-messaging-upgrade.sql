@@ -147,7 +147,7 @@ with check(bucket_id='yumas-chat-files' and (
 drop policy if exists "Yumas chat files read" on storage.objects;
 create policy "Yumas chat files read" on storage.objects for select to authenticated
 using(bucket_id='yumas-chat-files' and (
- (split_part(name,'/',1)<>'dm' and exists(select 1 from public.yumas_group_members m where m.group_id=split_part(name,'/',1)::uuid and m.user_id=auth.uid()))
+ (split_part(name,'/',1)<>'dm' and exists(select 1 from public.yumas_group_members m where m.group_id::text=split_part(name,'/',1) and m.user_id=auth.uid()))
  or
  (split_part(name,'/',1)='dm' and exists(select 1 from public.direct_messages dm where dm.content like '%'||name||'%' and (dm.sender_id=auth.uid() or dm.recipient_id=auth.uid())))
 ));
