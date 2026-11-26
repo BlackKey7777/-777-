@@ -197,6 +197,12 @@ body.messages-page #main>.pagehead{text-align:center;margin:0 0 18px;font-size:2
 .chat-photo{display:block;width:min(100%,360px);max-height:420px;object-fit:contain;border-radius:13px;margin:2px 0;background:#eee}
 .chat-topbar>.avatar{width:42px;height:42px;flex:0 0 42px}
 @media(max-width:600px){.chat-photo{max-width:min(72vw,320px);max-height:360px}.chat-topbar{gap:7px}.chat-topbar>.avatar{width:38px;height:38px;flex-basis:38px}}
+
+/* iPhone notch / standalone safe area: move page below the status bar */
+@media(max-width:760px){
+  .top{height:calc(58px + env(safe-area-inset-top));padding-top:env(safe-area-inset-top)}
+  .topin{height:58px;min-height:58px}
+}
 </style>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
