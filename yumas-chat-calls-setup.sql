@@ -27,8 +27,24 @@ drop policy if exists "Users send messages as themselves" on public.direct_messa
 create policy "Users send messages as themselves" on public.direct_messages
   for insert to authenticated
   with check ((select auth.uid()) = sender_id and sender_id <> recipient_id);
-grant select, insert on public.direct_messages to authenticated;
+grant select, insert, delete on public.direct_messages to authenticated;
 grant usage, select on sequence public.direct_messages_id_seq to authenticated;
+drop policy if exists "Users delete own messages" on public.direct_messages;
+create policy "Users delete own messages" on public.direct_messages
+  for delete to authenticated
+  using ((select auth.uid()) = sender_id);
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('voice-messages','voice-messages',true,3145728,array['audio/mp4','audio/webm','audio/ogg','audio/aac','audio/mpeg'])
+on conflict (id) do update set public=true,file_size_limit=3145728,allowed_mime_types=array['audio/mp4','audio/webm','audio/ogg','audio/aac','audio/mpeg'];
+drop policy if exists "YUMAS voice messages public read" on storage.objects;
+create policy "YUMAS voice messages public read" on storage.objects for select to public using (bucket_id='voice-messages');
+drop policy if exists "YUMAS users upload own voice messages" on storage.objects;
+create policy "YUMAS users upload own voice messages" on storage.objects for insert to authenticated
+  with check (bucket_id='voice-messages' and (storage.foldername(name))[1]=(select auth.uid())::text);
+drop policy if exists "YUMAS users delete own voice files" on storage.objects;
+create policy "YUMAS users delete own voice files" on storage.objects for delete to authenticated
+  using (bucket_id='voice-messages' and (storage.foldername(name))[1]=(select auth.uid())::text);
 
 create table if not exists public.call_signals (
   id bigint generated always as identity primary key,
