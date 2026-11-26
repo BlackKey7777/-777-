@@ -4,6 +4,10 @@
 alter table public.profiles add column if not exists last_seen timestamptz;
 create index if not exists profiles_last_seen_idx on public.profiles(last_seen desc);
 
+-- Permit text, voice, image and file attachment markers in direct chats.
+alter table public.direct_messages drop constraint if exists direct_messages_content_check;
+alter table public.direct_messages add constraint direct_messages_content_check check(char_length(content) between 1 and 12000);
+
 create or replace function public.generate_yumas_group_number()
 returns text language plpgsql volatile security definer set search_path=public as $$
 declare v text;
@@ -69,7 +73,7 @@ create policy "Yumas owners delete groups" on public.yumas_groups for delete to 
 
 drop policy if exists "Yumas members read membership" on public.yumas_group_members;
 create policy "Yumas members read membership" on public.yumas_group_members for select to authenticated
-using(user_id=auth.uid() or exists(select 1 from public.yumas_group_members mine where mine.group_id=group_id and mine.user_id=auth.uid()));
+using(user_id=auth.uid());
 drop policy if exists "Yumas owners add members" on public.yumas_group_members;
 create policy "Yumas owners add members" on public.yumas_group_members for insert to authenticated
 with check(user_id=auth.uid() and exists(select 1 from public.yumas_groups g where g.id=group_id and g.owner_id=auth.uid()));
