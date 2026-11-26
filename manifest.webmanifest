@@ -1,0 +1,24 @@
+{
+  "name": "YUMAS — социальная сеть",
+  "short_name": "YUMAS",
+  "description": "YUMAS — твоя территория общения.",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait",
+  "background_color": "#f7f7fc",
+  "theme_color": "#6857e8",
+  "icons": [
+    {
+      "src": "./yumas-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
