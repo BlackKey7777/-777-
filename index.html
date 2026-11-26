@@ -237,7 +237,16 @@ body.messages-page #main>.pagehead{text-align:center;margin:0 0 18px;font-size:2
 .avatar-shell.bigavatar.avatar-niqab{margin-bottom:13px}
 @media(max-width:380px){.avatar-shell.avatar{width:48px;height:48px}.avatar-shell.bigavatar{width:88px;height:88px}}
 @media(hover:none){.chat-profile-avatar{min-width:48px;min-height:48px;touch-action:manipulation}.chat-profile-avatar .avatar{width:48px;height:48px}}
-.admin-profile-icon{width:42px;height:42px;border:1px solid #f0c86b;border-radius:14px;background:linear-gradient(135deg,#fff1b8,#ffd45c);font-size:20px;cursor:pointer;box-shadow:0 3px 12px #d99a2b30}</style>
+.admin-profile-icon{width:42px;height:42px;border:1px solid #f0c86b;border-radius:14px;background:linear-gradient(135deg,#fff1b8,#ffd45c);font-size:20px;cursor:pointer;box-shadow:0 3px 12px #d99a2b30}
+/* Refined purple circular create button */
+@media(max-width:760px){
+.mobiletab-create{align-self:center;gap:4px;padding:0 0 2px;min-height:54px;color:#6852df!important}
+.mobiletab-create:before{content:none!important}
+.mobiletab-create svg{width:48px!important;height:48px!important;flex:0 0 48px;padding:12px;box-sizing:border-box;border-radius:50%;background:linear-gradient(145deg,#7865f2 0%,#6746df 58%,#9a50df 100%);border:1px solid #ffffffaa;stroke:#fff!important;stroke-width:2.4!important;filter:drop-shadow(0 5px 8px #6546d955);box-shadow:0 4px 12px #6746df44;transition:transform .2s ease,filter .2s ease}
+.mobiletab-create span{font-size:10px;font-weight:650;color:#6852df;margin:0;line-height:12px}
+.mobiletab-create:active svg{transform:scale(.9) rotate(90deg);filter:brightness(1.08)}
+}
+</style>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
