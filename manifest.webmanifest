@@ -12,10 +12,10 @@
   ],
   "orientation": "portrait",
   "background_color": "#f7f7fc",
-  "theme_color": "#6857e8",
+  "theme_color": "#0b8d45",
   "icons": [
     {
-      "src": "./yumas-icon.svg",
+      "src": "./yumas-winter-2026.svg?v=20261126",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
