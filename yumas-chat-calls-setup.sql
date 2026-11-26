@@ -11,7 +11,7 @@ create table if not exists public.direct_messages (
   id bigint generated always as identity primary key,
   sender_id uuid not null references auth.users(id) on delete cascade,
   recipient_id uuid not null references auth.users(id) on delete cascade,
-  content text not null check (char_length(content) between 1 and 5000),
+  content text not null check (char_length(content) between 1 and 1500000),
   created_at timestamptz not null default now(),
   constraint direct_messages_no_self check (sender_id <> recipient_id)
 );
