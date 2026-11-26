@@ -142,7 +142,7 @@ create policy "Yumas chat files upload" on storage.objects for insert to authent
 with check(bucket_id='yumas-chat-files' and (
  (split_part(name,'/',1)='dm' and split_part(name,'/',2)=auth.uid()::text)
  or
- (split_part(name,'/',1)<>'dm' and exists(select 1 from public.yumas_group_members m where m.group_id=split_part(name,'/',1)::uuid and m.user_id=auth.uid()))
+ (split_part(name,'/',1)<>'dm' and exists(select 1 from public.yumas_group_members m where m.group_id::text=split_part(name,'/',1) and m.user_id=auth.uid()))
 ));
 drop policy if exists "Yumas chat files read" on storage.objects;
 create policy "Yumas chat files read" on storage.objects for select to authenticated
@@ -157,6 +157,6 @@ using(bucket_id='yumas-chat-files' and split_part(name,'/',1)='dm' and split_par
 
 drop policy if exists "Yumas group photos upload" on storage.objects;
 create policy "Yumas group photos upload" on storage.objects for insert to authenticated
-with check(bucket_id='yumas-group-photos' and exists(select 1 from public.yumas_groups g where g.id=split_part(name,'/',1)::uuid and g.owner_id=auth.uid()));
+with check(bucket_id='yumas-group-photos' and exists(select 1 from public.yumas_groups g where g.id::text=split_part(name,'/',1) and g.owner_id=auth.uid()));
 drop policy if exists "Yumas group photos public read" on storage.objects;
 create policy "Yumas group photos public read" on storage.objects for select to public using(bucket_id='yumas-group-photos');
