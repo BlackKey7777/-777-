@@ -227,7 +227,7 @@ async function toggleVoiceRecording(){
     if(!target){if(status)status.textContent="Чат закрыт, запись не отправлена";return}
     const mime=blob.type||"audio/webm",ext=mime.includes("mp4")?"m4a":mime.includes("ogg")?"ogg":"webm";
     const path=currentUser.id+"/"+Date.now()+"-"+crypto.randomUUID()+"."+ext;
-    const upload=await db.storage.from("voice-messages").upload(path,blob,{upsert:false,contentType:mime,cacheControl:"3600"});
+    const upload=await db.storage.from("voice-messages").upload(path,blob,{upsert:false,contentType:mime.split(";")[0],cacheControl:"3600"});
     if(upload.error){if(status)status.textContent="Не удалось загрузить аудио: "+upload.error.message;toast(upload.error.message);return}
     const result=await db.from("direct_messages").insert({sender_id:currentUser.id,recipient_id:target,content:"[[voice]]"+path});
     if(result.error){await db.storage.from("voice-messages").remove([path]);if(status)status.textContent="Не удалось отправить: "+result.error.message;toast(result.error.message);return}
