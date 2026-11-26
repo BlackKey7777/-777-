@@ -259,9 +259,26 @@ body.messages-page #main>.pagehead{text-align:center;margin:0 0 18px;font-size:2
 <link rel="icon" type="image/svg+xml" href="./yumas-winter-2026.svg?v=20261127">
 <link rel="apple-touch-icon" href="./yumas-winter-2026.svg?v=20261127">
 <style id="yumas-direct-layout-css">body.yumas-layout-editing #main>*,body.yumas-layout-editing .sidebar>*,body.yumas-layout-editing .mobilebar>*{outline:2px dashed #8b78ed;outline-offset:3px;cursor:pointer}body.yumas-layout-editing .mobilebar{z-index:99997}body.yumas-layout-editing .mobilebar>*{touch-action:pan-y}.yumas-widget-selected{position:relative!important}.yumas-drag-handle{position:absolute;z-index:99998;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 3px 14px #0004;font:700 13px system-ui}.yumas-move-handle{top:7px;left:50%;transform:translateX(-50%);padding:8px 14px;border-radius:20px;background:#211b35;color:#fff;cursor:grab}.yumas-resize-handle{right:5px;bottom:5px;width:42px;height:42px;border-radius:13px;background:#7057e8;color:white;font-size:25px;cursor:nwse-resize;border:2px solid white}body.yumas-layout-editing .yumas-widget-selected{outline:3px solid #6c55df!important;outline-offset:4px;background-color:#f8f6ff}.yumas-widget-editor{position:fixed;z-index:99999;left:12px;right:12px;bottom:calc(78px + env(safe-area-inset-bottom));max-width:520px;margin:auto;background:#171522;color:white;border:1px solid #51466f;border-radius:18px;padding:13px;box-shadow:0 12px 40px #0005;display:none}.yumas-widget-editor-head,.yumas-widget-editor-actions{display:flex;align-items:center;justify-content:space-between;gap:8px}.yumas-widget-editor-head button,.yumas-widget-editor-actions button{border:0;border-radius:11px;padding:10px 12px;background:#39334b;color:white;font-weight:700}.yumas-widget-editor-name{font-size:13px;color:#ded9f2;margin:8px 0}.yumas-widget-editor-actions{margin:8px 0}.yumas-widget-editor small{color:#bcb5d3;font-size:11px}.yumas-widget-editor-actions{display:flex;flex-wrap:wrap;justify-content:space-between}.yumas-widget-editor-actions button{flex:1 1 68px;min-height:40px;padding:9px 7px;font-size:12px;background:#39334b;color:#fff;border:1px solid #62577b;border-radius:10px}.yumas-widget-editor-name{padding:4px 2px}.yumas-widget-editor .field{background:#292537;color:#fff;border-color:#51466f}@media(min-width:700px){.yumas-widget-editor{bottom:20px;left:auto;right:20px}}
+
+/* YUMAS startup loader and action entrance */
+.yumas-app-loader{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:var(--bg,#f7f6fb);color:var(--text,#211d2d);transition:opacity .38s ease,visibility .38s ease}
+.yumas-app-loader.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+.yumas-loader-mark{width:62px;height:62px;border-radius:21px;display:grid;place-items:center;background:linear-gradient(145deg,#7865f2,#6746df 65%,#9a50df);color:#fff;font-size:34px;font-weight:900;box-shadow:0 8px 26px #7657e52b;animation:yumasLoaderPulse 1.15s ease-in-out infinite}
+.yumas-loader-name{font-size:17px;font-weight:850;letter-spacing:3px}
+.yumas-loader-track{width:112px;height:3px;border-radius:9px;overflow:hidden;background:#8d7bd522}
+.yumas-loader-track i{display:block;width:42%;height:100%;border-radius:9px;background:linear-gradient(90deg,#7865f2,#a65be9);animation:yumasLoaderProgress 1.05s ease-in-out infinite}
+.yumas-app-loader small{font-size:11px;color:#918b9e;letter-spacing:.2px}
+@keyframes yumasLoaderPulse{0%,100%{transform:scale(.96);opacity:.86}50%{transform:scale(1.04);opacity:1}}
+@keyframes yumasLoaderProgress{0%{transform:translateX(-115%)}100%{transform:translateX(265%)}}
+@keyframes yumasActionEnter{0%{opacity:0;transform:translateY(-9px) scale(.94)}70%{opacity:1;transform:translateY(2px) scale(1.02)}100%{opacity:1;transform:translateY(0) scale(1)}}
+body.yumas-ready .topright #accountButton{animation:yumasActionEnter .55s .08s both cubic-bezier(.2,.8,.2,1)}
+body.yumas-ready .topright #headerPostButton{animation:yumasActionEnter .58s .18s both cubic-bezier(.2,.8,.2,1)}
+body.yumas-ready .mobiletab-create{animation:yumasActionEnter .62s .25s both cubic-bezier(.2,.8,.2,1)}
+@media(prefers-reduced-motion:reduce){.yumas-app-loader,.yumas-loader-mark,.yumas-loader-track i,body.yumas-ready .topright #accountButton,body.yumas-ready .topright #headerPostButton,body.yumas-ready .mobiletab-create{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+<div id="yumasAppLoader" class="yumas-app-loader" aria-label="Загрузка YUMAS"><div class="yumas-loader-mark">Y</div><div class="yumas-loader-name">YUMAS</div><div class="yumas-loader-track"><i></i></div><small>Загружаем приложение</small></div>
 <header class="top"><div class="topin"><div><span class="logo">YUMAS</span><span class="tag">Твоя территория общения</span></div><div class="topright"><span id="accountLabel" class="tag">Гость</span><button class="black" id="accountButton" onclick="openAuth()">Войти</button><button class="black" id="headerPostButton" onclick="openComposer()">Создать пост</button></div></div></header>
 <div class="layout"><main id="main">
 <section class="welcome"><h1>Добро пожаловать в YUMAS 👋</h1><p>Делись моментами, находи людей и оставайся на связи.</p><div class="demo-note" id="connectionStatus"><strong>YUMAS</strong> · Проверяем подключение…</div></section>
@@ -561,9 +578,22 @@ async function sendChatMessage(){const input=$("chatInput"),content=input?.value
 async function deleteChatMessage(id){if(!currentUser||!id)return;if(!confirm("Удалить это сообщение у всех участников чата?"))return;const q=await db.from("direct_messages").select("content").eq("id",id).eq("sender_id",currentUser.id).maybeSingle();if(q.error||!q.data){toast("Не удалось найти сообщение для удаления");return}const raw=String(q.data.content||"");const del=await db.from("direct_messages").delete().eq("id",id).eq("sender_id",currentUser.id);if(del.error){toast("Не удалось удалить: "+del.error.message);return}if(raw.startsWith("[[voice]]")){const path=raw.slice(9);if(!path.startsWith("data:")&&!path.startsWith("http"))await db.storage.from("voice-messages").remove([path])}else if(raw.startsWith("[[image]]")){const path=raw.slice(9);await db.storage.from("chat-images").remove([path]);chatImageUrlCache.delete(path)}await loadChatMessages();await loadChatContacts();toast("Сообщение удалено у всех")}
 function toggleMute(){if(!localStream)return;const t=localStream.getAudioTracks()[0];if(!t)return;t.enabled=!t.enabled;$("muteButton").textContent=t.enabled?"🎙️":"🔇";$("muteButton").classList.toggle("active",!t.enabled);$("muteButton").title=t.enabled?"Отключить микрофон":"Включить микрофон"}
 
+function hideYumasLoader(){const el=$("yumasAppLoader");if(!el)return;el.classList.add("is-leaving");document.body.classList.add("yumas-ready");setTimeout(()=>el.remove(),450)}
+setTimeout(hideYumasLoader,6500);
 async function init(){
- setupDirectWidgetEditing();
- await loadSiteLayout();if(!db){setStatus("Не загрузилась библиотека Supabase");return}document.addEventListener("visibilitychange",()=>{if(!document.hidden)touchPresence()});window.addEventListener("focus",touchPresence);setStatus("Проверяем соединение с базой");const r=await db.from("profiles").select("id").limit(1);if(r.error){setStatus("Нужно применить SQL из supabase-schema.sql");console.error(r.error)}else setStatus("Общая база доступна");await refreshAccount();db.auth.onAuthStateChange(()=>{refreshAccount()})}
+ try{
+  setupDirectWidgetEditing();
+  await loadSiteLayout();
+  if(!db){setStatus("Не загрузилась библиотека Supabase");return}
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)touchPresence()});
+  window.addEventListener("focus",touchPresence);
+  setStatus("Проверяем соединение с базой");
+  const r=await db.from("profiles").select("id").limit(1);
+  if(r.error){setStatus("Нужно применить SQL из supabase-schema.sql");console.error(r.error)}else setStatus("Общая база доступна");
+  await refreshAccount();
+  db.auth.onAuthStateChange(()=>{refreshAccount()});
+ }finally{hideYumasLoader()}
+}
 init();
 
 </script>
