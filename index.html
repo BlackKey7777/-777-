@@ -156,6 +156,10 @@ button,.action,.mobiletab{-webkit-tap-highlight-color:transparent;touch-action:m
 }
 
 
+/* Дополнительный отступ сверху только для списка сообщений/чатов на iPhone */
+@media(max-width:760px){
+  body.messages-page #main{padding-top:113px!important}
+}
 /* Режим раздела сообщений: чистая верхняя панель и заголовок по центру */
 body.messages-page .topright{display:none!important}
 body.messages-page .topin{justify-content:center!important}
