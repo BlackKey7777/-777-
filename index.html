@@ -25,7 +25,7 @@
 
 const $=id=>document.getElementById(id);
 const SUPABASE_URL="https://xkcuolnzwboilbagitho.supabase.co";
-const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrY3VvbG5pd2Jv aWxiYWdpdGhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU2NDA2MDIsImV4cCI6MjExMTIxNjYwMn0.WTTAaUJfVaMzsJGwNltvS_bKz4tOflKQkMM_napoIp4".replaceAll(" ","");
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrY3VvbG56d2JvaWxiYWdpdGhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU2NDA2MDIsImV4cCI6MjExMTIxNjYwMn0.WTTAaUJfVaMzsJGwNltvS_bKz4tOflKQkMM_napoIp4";
 const db=window.supabase?.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 let session=null,currentUser=null,profile={name:"Гость",bio:"",initial:"Г"},posts=[],currentPage="feed";
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
