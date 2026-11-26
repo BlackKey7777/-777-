@@ -201,7 +201,8 @@ body.messages-page #main>.pagehead{text-align:center;margin:0 0 18px;font-size:2
 /* iPhone notch / standalone safe area: move page below the status bar */
 @media(max-width:760px){
   .top{height:calc(58px + env(safe-area-inset-top));padding-top:env(safe-area-inset-top)}
-  .topin{height:58px;min-height:58px}
+  .topin{height:58px;min-height:58px;transform:translateY(-5px)}
+  .mobilebar{transform:translateY(4px)}
 }
 </style>
 
