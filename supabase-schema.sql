@@ -100,6 +100,8 @@ begin
 end;
 $$;
 
+revoke all on function public.handle_new_yumas_user() from public, anon, authenticated;
+
 drop trigger if exists on_auth_user_created_yumas on auth.users;
 create trigger on_auth_user_created_yumas
   after insert on auth.users
