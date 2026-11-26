@@ -524,6 +524,7 @@ async function deleteChatMessage(id){if(!currentUser||!id)return;if(!confirm("У
 function toggleMute(){if(!localStream)return;const t=localStream.getAudioTracks()[0];if(!t)return;t.enabled=!t.enabled;$("muteButton").textContent=t.enabled?"🎙️":"🔇";$("muteButton").classList.toggle("active",!t.enabled);$("muteButton").title=t.enabled?"Отключить микрофон":"Включить микрофон"}
 
 async function init(){
+ setupDirectWidgetEditing();
  await loadSiteLayout();if(!db){setStatus("Не загрузилась библиотека Supabase");return}document.addEventListener("visibilitychange",()=>{if(!document.hidden)touchPresence()});window.addEventListener("focus",touchPresence);setStatus("Проверяем соединение с базой");const r=await db.from("profiles").select("id").limit(1);if(r.error){setStatus("Нужно применить SQL из supabase-schema.sql");console.error(r.error)}else setStatus("Общая база доступна");await refreshAccount();db.auth.onAuthStateChange(()=>{refreshAccount()})}
 init();
 
