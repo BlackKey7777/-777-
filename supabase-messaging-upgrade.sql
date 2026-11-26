@@ -131,7 +131,7 @@ grant select,insert,update,delete on public.yumas_groups,public.yumas_group_memb
 grant usage,select on sequence public.yumas_group_messages_id_seq,public.yumas_message_reactions_id_seq to authenticated;
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
-values('yumas-chat-files','yumas-chat-files',false,26214400,array['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/quicktime','video/webm','application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/plain','application/zip','audio/mp4','audio/webm','audio/ogg'])
+values('yumas-chat-files','yumas-chat-files',false,26214400,array['image/jpeg','image/png','image/webp','image/gif','image/heic','image/heif','video/mp4','video/quicktime','video/webm','application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/plain','application/zip','audio/mp4','audio/webm','audio/ogg'])
 on conflict(id) do update set file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
 values('yumas-group-photos','yumas-group-photos',true,5242880,array['image/jpeg','image/png','image/webp','image/gif'])
