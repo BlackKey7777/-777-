@@ -327,9 +327,10 @@ async function loadChatMessages(){
  const toRender=canAppend?messages.slice(snapshot.length):messages;
  const near=box.scrollHeight-box.scrollTop-box.clientHeight<140;
  const rendered=await Promise.all(toRender.map(async x=>{
-  const raw=String(x.content||""),voice=raw.startsWith("[[voice]]");
+  const raw=String(x.content||""),voice=raw.startsWith("[[voice]]"),photo=raw.startsWith("[[image]]");
   let body;
-  if(voice){
+  if(photo){const path=raw.slice(9);let url="";const cached=chatImageUrlCache.get(path);if(cached&&cached.expires>Date.now())url=cached.url;else{const signed=await db.storage.from("chat-images").createSignedUrl(path,3600);if(!signed.error&&signed.data?.signedUrl){url=signed.data.signedUrl;chatImageUrlCache.set(path,{url,expires:Date.now()+3500000})}}body=url?'<img class="chat-photo" src="'+esc(url)+'" alt="Фото" loading="lazy">':'<div class="voice-bubble">📷 Не удалось загрузить фото</div>';}
+  else if(voice){
    const source=raw.slice(9);let url="";
    if(source.startsWith("data:"))url=source;
    else if(source.startsWith("http"))url=source;
@@ -428,6 +429,7 @@ async function searchPeople(v){const box=$("peopleResults");if(!box)return;if(v.
 /* Removed obsolete duplicate chat contact renderer. */
 /* Obsolete duplicate openChat removed; retain full chat composer above. */
 /* Removed obsolete duplicate message renderer; preserve audio controls. */
+async function sendChatPhoto(file){if(!file||!activeChat||!currentUser)return;if(!file.type.startsWith("image/")||file.size>5*1024*1024){toast("Выбери изображение до 5 МБ");return}const target=activeChat.id,ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg",path=currentUser.id+"/"+target+"/"+crypto.randomUUID()+"."+ext;const status=$("voiceStatus");if(status)status.textContent="Загружаем фотографию…";const up=await db.storage.from("chat-images").upload(path,file,{upsert:false,contentType:file.type,cacheControl:"3600"});if(up.error){toast("Не удалось загрузить фото: "+up.error.message);if(status)status.textContent="";return}const r=await db.from("direct_messages").insert({sender_id:currentUser.id,recipient_id:target,content:"[[image]]"+path});if(r.error){await db.storage.from("chat-images").remove([path]);toast("Не удалось отправить фото: "+r.error.message);if(status)status.textContent="";return}if(status)status.textContent="Фото отправлено ✓";await loadChatMessages();await loadChatContacts();const input=$("chatImageFile");if(input)input.value=""}
 async function sendChatMessage(){const input=$("chatInput"),content=input?.value.trim();if(!content||!activeChat||!currentUser)return;const r=await db.from("direct_messages").insert({sender_id:currentUser.id,recipient_id:activeChat.id,content});if(r.error){toast(r.error.message);return}input.value="";await loadChatMessages();await loadChatContacts();input.focus()}
 async function deleteChatMessage(id){if(!currentUser||!id)return;if(!confirm("Удалить это сообщение у всех участников чата?"))return;const q=await db.from("direct_messages").select("content").eq("id",id).eq("sender_id",currentUser.id).maybeSingle();if(q.error||!q.data){toast("Не удалось найти сообщение для удаления");return}const raw=String(q.data.content||"");const del=await db.from("direct_messages").delete().eq("id",id).eq("sender_id",currentUser.id);if(del.error){toast("Не удалось удалить: "+del.error.message);return}if(raw.startsWith("[[voice]]")){const path=raw.slice(9);if(!path.startsWith("data:")&&!path.startsWith("http"))await db.storage.from("voice-messages").remove([path])}await loadChatMessages();await loadChatContacts();toast("Сообщение удалено у всех")}
 function toggleMute(){if(!localStream)return;const t=localStream.getAudioTracks()[0];if(!t)return;t.enabled=!t.enabled;$("muteButton").textContent=t.enabled?"🎙️":"🔇";$("muteButton").classList.toggle("active",!t.enabled);$("muteButton").title=t.enabled?"Отключить микрофон":"Включить микрофон"}
