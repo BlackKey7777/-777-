@@ -474,7 +474,7 @@ async function loadChatMessages(){
   const raw=String(x.content||"");let body="";
   if(raw.startsWith("[[image]]")||raw.startsWith("[[file]]")){
    const isImage=raw.startsWith("[[image]]"),data=raw.slice(isImage?9:8),path=data.split("|")[0],mime=data.split("|")[1]||"",filename=data.split("|")[2]||"Файл";
-   const signed=await db.storage.from("yumas-chat-files").createSignedUrl(path,3600);const url=!signed.error?signed.data?.signedUrl:"";
+   const fileBucket=(isGroup||path.startsWith("dm/"))?"yumas-chat-files":"chat-images";const signed=await db.storage.from(fileBucket).createSignedUrl(path,3600);const url=!signed.error?signed.data?.signedUrl:"";
    if(url&&isImage)body='<a href="'+esc(url)+'" target="_blank" rel="noopener"><img class="chat-photo" src="'+esc(url)+'" alt="Фото" loading="lazy"></a>';
    else if(url&&mime.startsWith("video/"))body='<video class="chat-video" controls playsinline preload="metadata" src="'+esc(url)+'"></video>';
    else if(url)body='<a class="chat-file-link" href="'+esc(url)+'" target="_blank" rel="noopener" download="'+esc(filename)+'">📎 '+esc(filename)+'</a>';
@@ -618,7 +618,7 @@ async function deleteChatMessage(id){
  const raw=String(q.data.content||""),del=await db.from(table).delete().eq("id",id).eq("sender_id",currentUser.id);
  if(del.error){toast("Не удалось удалить: "+del.error.message);return}
  if(raw.startsWith("[[voice]]")){const path=raw.slice(9);if(!path.startsWith("data:")&&!path.startsWith("http"))await db.storage.from(isGroup?"yumas-chat-files":"voice-messages").remove([path])}
- else if(raw.startsWith("[[image]]")||raw.startsWith("[[file]]")){const path=raw.slice(raw.startsWith("[[image]]")?9:8).split("|")[0];await db.storage.from("yumas-chat-files").remove([path])}
+ else if(raw.startsWith("[[image]]")||raw.startsWith("[[file]]")){const path=raw.slice(raw.startsWith("[[image]]")?9:8).split("|")[0];await db.storage.from((isGroup||path.startsWith("dm/"))?"yumas-chat-files":"chat-images").remove([path])}
  await loadChatMessages();if(!isGroup)await loadChatContacts();toast("Сообщение удалено у всех")
 }
 function toggleMute(){if(!localStream)return;const t=localStream.getAudioTracks()[0];if(!t)return;t.enabled=!t.enabled;$("muteButton").textContent=t.enabled?"🎙️":"🔇";$("muteButton").classList.toggle("active",!t.enabled);$("muteButton").title=t.enabled?"Отключить микрофон":"Включить микрофон"}
