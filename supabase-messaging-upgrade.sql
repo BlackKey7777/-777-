@@ -160,3 +160,34 @@ create policy "Yumas group photos upload" on storage.objects for insert to authe
 with check(bucket_id='yumas-group-photos' and exists(select 1 from public.yumas_groups g where g.id::text=split_part(name,'/',1) and g.owner_id=auth.uid()));
 drop policy if exists "Yumas group photos public read" on storage.objects;
 create policy "Yumas group photos public read" on storage.objects for select to public using(bucket_id='yumas-group-photos');
+
+-- YUMAS shared community music library
+create table if not exists public.yumas_music_tracks(
+ id uuid primary key default gen_random_uuid(),
+ user_id uuid not null references auth.users(id) on delete cascade,
+ title text not null check(char_length(title) between 1 and 100),
+ artist text not null check(char_length(artist) between 1 and 80),
+ storage_path text not null unique,
+ created_at timestamptz not null default now()
+);
+create index if not exists yumas_music_tracks_created_idx on public.yumas_music_tracks(created_at desc);
+alter table public.yumas_music_tracks enable row level security;
+drop policy if exists "Yumas music tracks public read" on public.yumas_music_tracks;
+create policy "Yumas music tracks public read" on public.yumas_music_tracks for select to anon,authenticated using(true);
+drop policy if exists "Yumas users publish own music" on public.yumas_music_tracks;
+create policy "Yumas users publish own music" on public.yumas_music_tracks for insert to authenticated with check(user_id=auth.uid());
+drop policy if exists "Yumas users delete own music" on public.yumas_music_tracks;
+create policy "Yumas users delete own music" on public.yumas_music_tracks for delete to authenticated using(user_id=auth.uid());
+grant select on public.yumas_music_tracks to anon,authenticated;
+grant insert,delete on public.yumas_music_tracks to authenticated;
+
+insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
+values('yumas-public-music','yumas-public-music',true,15728640,array['audio/mpeg','audio/mp3','audio/mp4','audio/x-m4a','audio/wav','audio/x-wav','audio/ogg','audio/flac','audio/aac','audio/aacp','audio/webm'])
+on conflict(id) do update set public=true,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
+
+drop policy if exists "Yumas community music public stream" on storage.objects;
+create policy "Yumas community music public stream" on storage.objects for select to public using(bucket_id='yumas-public-music');
+drop policy if exists "Yumas users upload own community music" on storage.objects;
+create policy "Yumas users upload own community music" on storage.objects for insert to authenticated with check(bucket_id='yumas-public-music' and split_part(name,'/',1)=auth.uid()::text);
+drop policy if exists "Yumas users delete own community music" on storage.objects;
+create policy "Yumas users delete own community music" on storage.objects for delete to authenticated using(bucket_id='yumas-public-music' and split_part(name,'/',1)=auth.uid()::text);
