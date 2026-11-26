@@ -6,7 +6,7 @@ create index if not exists profiles_last_seen_idx on public.profiles(last_seen d
 
 -- Permit text, voice, image and file attachment markers in direct chats.
 alter table public.direct_messages drop constraint if exists direct_messages_content_check;
-alter table public.direct_messages add constraint direct_messages_content_check check(char_length(content) between 1 and 12000);
+alter table public.direct_messages add constraint direct_messages_content_check check(char_length(content) between 1 and 12000) not valid;
 
 create or replace function public.generate_yumas_group_number()
 returns text language plpgsql volatile security definer set search_path=public as $$
