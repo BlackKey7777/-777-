@@ -1,6 +1,12 @@
 -- YUMAS: owner badge, direct messages and WebRTC call signaling
 begin;
 
+-- Re-apply owner assignment in case the account was registered after the first admin migration.
+insert into public.yumas_admins (user_id)
+select id from auth.users where lower(email)=lower('sashaketov501@gmail.com')
+on conflict (user_id) do nothing;
+
+
 create table if not exists public.direct_messages (
   id bigint generated always as identity primary key,
   sender_id uuid not null references auth.users(id) on delete cascade,
