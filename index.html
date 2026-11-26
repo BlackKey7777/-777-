@@ -215,6 +215,9 @@ body.messages-page #main>.pagehead{text-align:center;margin:0 0 18px;font-size:2
 
 /* Chat typing, online dot and unread badges */
 .chatperson{position:relative}.cpname{display:flex;align-items:center;gap:6px}.online-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#20bd73;box-shadow:0 0 0 3px #20bd7320;flex:0 0 auto}.unread-badge{margin-left:auto;min-width:21px;height:21px;padding:0 6px;border-radius:12px;background:#6857e8;color:#fff;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}.typing-line{display:inline-flex;align-items:center;gap:5px;color:#6857e8;font-weight:650}.typing-dots{display:inline-flex;gap:3px;align-items:center;height:14px}.typing-dots i{width:4px;height:4px;border-radius:50%;background:currentColor;animation:yumasTyping 1s infinite ease-in-out}.typing-dots i:nth-child(2){animation-delay:.15s}.typing-dots i:nth-child(3){animation-delay:.3s}@keyframes yumasTyping{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-4px);opacity:1}}.chat-typing{padding:3px 14px 8px;color:#6857e8;font-size:12px;min-height:20px;flex:0 0 auto}
+
+.brand-lockup{display:inline-flex;align-items:center;gap:9px}.brand-avatar{width:38px;height:38px;border-radius:12px;object-fit:cover;box-shadow:0 3px 12px #0b8d4533;vertical-align:middle}.logo{vertical-align:middle}
+@media(max-width:760px){.brand-avatar{width:34px;height:34px;border-radius:11px}.brand-lockup{gap:7px}}
 </style>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -226,7 +229,7 @@ body.messages-page #main>.pagehead{text-align:center;margin:0 0 18px;font-size:2
 <link rel="apple-touch-icon" href="./yumas-icon.svg">
 </head>
 <body>
-<header class="top"><div class="topin"><div><span class="logo">YUMAS</span><span class="tag">Твоя территория общения</span></div><div class="topright"><span id="accountLabel" class="tag">Гость</span><span id="ownerCrown" class="owner-crown hidden">👑</span><button class="black" id="accountButton" onclick="openAuth()">Войти</button><button class="black" onclick="openComposer()">Создать пост</button></div></div></header>
+<header class="top"><div class="topin"><div><span class="brand-lockup"><img class="brand-avatar" src="./yumas-icon.svg" alt="YUMAS" width="38" height="38"><span class="logo">YUMAS</span></span><span class="tag">Твоя территория общения</span></div><div class="topright"><span id="accountLabel" class="tag">Гость</span><span id="ownerCrown" class="owner-crown hidden">👑</span><button class="black" id="accountButton" onclick="openAuth()">Войти</button><button class="black" onclick="openComposer()">Создать пост</button></div></div></header>
 <div class="layout"><main id="main">
 <section class="welcome"><h1>Добро пожаловать в YUMAS 👋</h1><p>Делись моментами, находи людей и оставайся на связи.</p><div class="demo-note" id="connectionStatus"><strong>YUMAS</strong> · Проверяем подключение…</div></section>
 <section class="composer"><div class="composehead"><div class="avatar" id="miniAvatar">Y</div><button class="composehint" onclick="openComposer()">Что у тебя нового?</button></div><div class="composeactions"><span>✦ Поделись своей мыслью</span><button class="black" onclick="openComposer()">Опубликовать</button></div></section>
