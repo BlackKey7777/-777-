@@ -191,6 +191,14 @@ body.messages-page #main>.pagehead{text-align:center;margin:0 0 18px;font-size:2
 .chat-topbar>.avatar{width:42px;height:42px;flex:0 0 42px}
 @media(max-width:600px){.chat-photo{max-width:min(72vw,320px);max-height:360px}.chat-topbar{gap:7px}.chat-topbar>.avatar{width:38px;height:38px;flex-basis:38px}}
 </style>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="YUMAS">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./yumas-icon.svg">
+<link rel="apple-touch-icon" href="./yumas-icon.svg">
 </head>
 <body>
 <header class="top"><div class="topin"><div><span class="logo">YUMAS</span><span class="tag">Твоя территория общения</span></div><div class="topright"><span id="accountLabel" class="tag">Гость</span><span id="ownerCrown" class="owner-crown hidden">👑</span><button class="black" id="accountButton" onclick="openAuth()">Войти</button><button class="black" onclick="openComposer()">Создать пост</button></div></div></header>
