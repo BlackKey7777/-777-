@@ -6,21 +6,28 @@ insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 values (
   'voice-messages',
   'voice-messages',
-  true,
+  false,
   3145728,
   array['audio/mp4','audio/webm','audio/ogg','audio/aac','audio/mpeg']
 )
 on conflict (id) do update set
-  public = true,
+  public = false,
   file_size_limit = 3145728,
   allowed_mime_types = array['audio/mp4','audio/webm','audio/ogg','audio/aac','audio/mpeg'];
 
--- Public playback URLs are used by the audio player in chats.
+-- Only the sender and recipient may create signed playback URLs.
 drop policy if exists "YUMAS voice messages public read" on storage.objects;
-create policy "YUMAS voice messages public read"
+drop policy if exists "YUMAS voice messages participants read" on storage.objects;
+create policy "YUMAS voice messages participants read"
 on storage.objects for select
-to public
-using (bucket_id = 'voice-messages');
+to authenticated
+using (
+  bucket_id = 'voice-messages'
+  and (
+    (storage.foldername(name))[1] = (select auth.uid())::text
+    or (storage.foldername(name))[2] = (select auth.uid())::text
+  )
+);
 
 -- Each user can upload only into their own folder.
 drop policy if exists "YUMAS users upload own voice messages" on storage.objects;
