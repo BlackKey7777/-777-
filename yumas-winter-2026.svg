@@ -14,7 +14,7 @@
 <path d="M150 125L256 248L362 125M256 248V405" fill="none" stroke="url(#y)" stroke-width="88" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
 <path d="M150 125L256 248L362 125M256 248V405" fill="none" stroke="#d7ffba" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".45"/>
 <path d="M119 177Q256 295 393 177M194 317Q256 350 318 317" fill="none" stroke="url(#t)" stroke-width="9" stroke-linecap="round"/>
-<g stroke="#fff" stroke-width="5"><circle cx="177" cy="204" r="19" fill="#e34d67"/><circle cx="335" cy="204" r="19" fill="#e34d67"/><circle cx="256" cy="330" r="21" fill="#e9c85d"/><circle cx="256" cy="405" r="13" fill="#d9f4e3"/></g>
+<g stroke="#fff" stroke-width="5"><circle cx="177" cy="204" r="19" fill="#e34d67"/><circle cx="335" cy="204" r="19" fill="#e34d67"/><circle cx="256" cy="330" r="21" fill="#e9c85d"/></g>
 <g fill="#fff" filter="url(#glow)"><circle cx="151" cy="125" r="8"/><circle cx="362" cy="125" r="8"/><circle cx="256" cy="248" r="8"/></g>
 <path d="M225 74l31-29 31 29-31 16z" fill="url(#t)" stroke="#fff" stroke-width="3"/>
 <path d="M90 445q48-30 96 0t96 0 96 0 44 0" fill="none" stroke="url(#t)" stroke-width="8" stroke-linecap="round"/>
