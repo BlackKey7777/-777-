@@ -525,7 +525,7 @@ async function toggleVoiceRecording(){
     const upload=await db.storage.from(voiceBucket).upload(path,blob,{upsert:false,contentType:mime.split(";")[0],cacheControl:"3600"});
     if(upload.error){if(status)status.textContent="Не удалось загрузить аудио: "+upload.error.message;toast(upload.error.message);return}
     const result=activeChat?.isGroup?await db.from("yumas_group_messages").insert({group_id:target,sender_id:currentUser.id,content:"[[voice]]"+path}):await db.from("direct_messages").insert({sender_id:currentUser.id,recipient_id:target,content:"[[voice]]"+path});
-    if(result.error){await db.storage.from("voice-messages").remove([path]);if(status)status.textContent="Не удалось отправить: "+result.error.message;toast(result.error.message);return}
+    if(result.error){await db.storage.from(voiceBucket).remove([path]);if(status)status.textContent="Не удалось отправить: "+result.error.message;toast(result.error.message);return}
     if(status)status.textContent="Голосовое отправлено ✓";
     lastChatMessagesKey="";await loadChatMessages();if(!activeChat?.isGroup)await loadChatContacts();
   };
